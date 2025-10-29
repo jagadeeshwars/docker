@@ -1,6 +1,6 @@
 #build stage
 
-FROM node:18-alphine AS build
+FROM node:18-alpine AS build
 
 WORKDIR /app
 
@@ -14,7 +14,7 @@ RUN npm run build
 
 #deployment stage
 
-FROM node:18-alphine
+FROM node:18-alpine
 
 WORKDIR /app
 
