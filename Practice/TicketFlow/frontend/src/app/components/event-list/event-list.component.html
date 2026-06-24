@@ -1,0 +1,30 @@
+<div class="mb-4 text-center text-green-600 font-bold" *ngIf="message">
+  {{ message }}
+</div>
+
+<h2 class="text-3xl font-bold mb-6">Upcoming Events</h2>
+
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+  <div *ngFor="let event of events" class="bg-white rounded-lg shadow-md overflow-hidden">
+    <div class="p-6">
+      <h3 class="font-bold text-xl mb-2">{{ event.title }}</h3>
+      <p class="text-gray-700 text-base mb-2">{{ event.description }}</p>
+      <div class="text-sm text-gray-600 mb-4">
+        <p><strong>Date:</strong> {{ event.date | date:'medium' }}</p>
+        <p><strong>Location:</strong> {{ event.location }}</p>
+        <p><strong>Price:</strong> ${{ event.price }}</p>
+      </div>
+      
+      <div class="flex items-center mt-4">
+        <input type="number" [(ngModel)]="bookingQuantities[event.id]" min="1" class="border rounded py-2 px-3 w-20 mr-4" />
+        <button (click)="book(event.id)" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded w-full">
+          Book Tickets
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="events.length === 0" class="text-center text-gray-500 mt-10">
+  No events found. Admin needs to create some.
+</div>

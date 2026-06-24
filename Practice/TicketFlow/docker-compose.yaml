@@ -1,0 +1,76 @@
+services:
+  frontend:
+    build:
+      context: ./frontend
+    container_name: frontend
+    ports:
+      - "8080:80"
+    depends_on:
+      backend:
+        condition: service_started
+      mysql:
+        condition: service_started
+    networks:
+      - frontend_net
+    restart: always
+  
+  backend:
+    build:
+      context: ./backend
+    container_name: backend
+    ports:
+      - "5000:5000"
+    environment:
+      DB_HOST: mysql
+      DB_PORT: 3306
+      DB_USER: root
+      DB_PASSWORD_FILE: /run/secrets/mysql_root_password
+      DB_NAME: ticketflow
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      JWT_SECRET: supersecretjwtkey123
+    secrets:
+      - mysql_root_password
+    depends_on:
+      mysql:
+        condition: service_started
+    networks:
+      - backend_net
+      - frontend_net
+    restart: always
+
+  mysql:
+    image: mysql:8
+    container_name: mysql
+    environment:
+      MYSQL_ROOT_PASSWORD_FILE: /run/secrets/mysql_root_password
+      MYSQL_DATABASE: ticketflow
+    ports:
+      - "3306:3306"
+    secrets:
+      - mysql_root_password
+    volumes:
+      - mysql_data:/var/lib/mysql
+    networks:
+      - backend_net
+    restart: always
+
+  redis:
+    image: redis:alpine
+    container_name: redis
+    ports:
+      - "6379:6379"
+    networks:
+      - backend_net
+    restart: always
+
+networks:
+  frontend_net:
+  backend_net:
+volumes:
+  mysql_data:
+secrets:
+  mysql_root_password:
+    file: ./secrets/mysql_root_password.txt
+  mysql_password:
+    file: ./secrets/mysql_password.txt

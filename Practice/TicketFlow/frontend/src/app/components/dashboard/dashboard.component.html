@@ -1,0 +1,33 @@
+<h2 class="text-3xl font-bold mb-6">My Bookings</h2>
+
+<div *ngIf="error" class="bg-red-100 text-red-700 p-3 rounded mb-4">
+  {{ error }}
+</div>
+
+<div class="bg-white shadow-md rounded my-6 overflow-x-auto">
+  <table class="text-left w-full border-collapse">
+    <thead>
+      <tr>
+        <th class="py-4 px-6 bg-gray-100 font-bold uppercase text-sm text-gray-600 border-b border-gray-200">Event</th>
+        <th class="py-4 px-6 bg-gray-100 font-bold uppercase text-sm text-gray-600 border-b border-gray-200">Date</th>
+        <th class="py-4 px-6 bg-gray-100 font-bold uppercase text-sm text-gray-600 border-b border-gray-200">Tickets</th>
+        <th class="py-4 px-6 bg-gray-100 font-bold uppercase text-sm text-gray-600 border-b border-gray-200">Total Price</th>
+        <th class="py-4 px-6 bg-gray-100 font-bold uppercase text-sm text-gray-600 border-b border-gray-200">Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let booking of bookings" class="hover:bg-gray-50">
+        <td class="py-4 px-6 border-b border-gray-200">{{ booking.Event?.title }}</td>
+        <td class="py-4 px-6 border-b border-gray-200">{{ booking.Event?.date | date:'short' }}</td>
+        <td class="py-4 px-6 border-b border-gray-200">{{ booking.quantity }}</td>
+        <td class="py-4 px-6 border-b border-gray-200">${{ booking.total_price }}</td>
+        <td class="py-4 px-6 border-b border-gray-200">
+          <span class="bg-green-200 text-green-700 py-1 px-3 rounded-full text-xs">{{ booking.status }}</span>
+        </td>
+      </tr>
+      <tr *ngIf="bookings.length === 0">
+        <td colspan="5" class="py-4 px-6 border-b border-gray-200 text-center text-gray-500">You have no bookings yet.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
