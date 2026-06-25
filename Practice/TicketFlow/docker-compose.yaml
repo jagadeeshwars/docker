@@ -72,5 +72,3 @@ volumes:
 secrets:
   mysql_root_password:
     file: ./secrets/mysql_root_password.txt
-  mysql_password:
-    file: ./secrets/mysql_password.txt
